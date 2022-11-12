@@ -2,7 +2,7 @@ import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
 export async function getReelFileUrl(
   url: string
-): Promise<Record<string, string>> {
+): Promise<Record<string, string | boolean>> {
   const request_url =
     "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/media_by_id?" +
     new URLSearchParams({
@@ -10,18 +10,27 @@ export async function getReelFileUrl(
       response_type: "reels",
     }).toString();
 
-  const res = await fetch(request_url, {
-    method: "GET",
-    headers: {
-      "X-RapidAPI-Key": config().RAPID_KEY,
-      "X-RapidAPI-Host": "instagram-bulk-profile-scrapper.p.rapidapi.com",
-    },
-  });
-  const body = await res.json();
+  const keys = [config().RAPID_KEY1, config().RAPID_KEY2, config().RAPID_KEY3];
+  const abc = new AbortController();
+  const timeout = setTimeout(() => abc.abort(), 9000);
+  try {
+    const res = await fetch(request_url, {
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": keys[Math.floor(Math.random() * 2)],
+        "X-RapidAPI-Host": "instagram-bulk-profile-scrapper.p.rapidapi.com",
+      },
+      signal: abc.signal,
+    });
+    const body = await res.json();
 
-  return {
-    video_url: body[0].items[0].video_versions[0].url,
-    preview_url: body[0].items[0].image_versions2.candidates[2].url,
-    author: body[0].items[0].user.username,
-  };
+    return {
+      video_url: body[0].items[0].video_versions[0].url,
+      preview_url: body[0].items[0].image_versions2.candidates[2].url,
+      author: body[0].items[0].user.username,
+    };
+  } catch (e) {
+    console.log(e);
+    return { timeout: true };
+  }
 }
