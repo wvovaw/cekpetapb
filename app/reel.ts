@@ -1,5 +1,3 @@
-import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
-
 export async function getReelFileUrl(
   url: string
 ): Promise<Record<string, string | boolean>> {
@@ -10,7 +8,11 @@ export async function getReelFileUrl(
       response_type: "reels",
     }).toString();
 
-  const keys = [config().RAPID_KEY1, config().RAPID_KEY2, config().RAPID_KEY3];
+  const keys = [
+    Deno.env.get("RAPID_KEY1"),
+    Deno.env.get("RAPID_KEY2"),
+    Deno.env.get("RAPID_KEY3"),
+  ];
   const abc = new AbortController();
   const timeout = setTimeout(() => abc.abort(), 9000);
   try {

@@ -1,7 +1,9 @@
 # Simplest telegram bot ever
 
 <div align="right">
+
  ### Powered by [GrammY](https://github.com/grammyjs/grammY)
+
 </div>
 
 ## What can it do now
