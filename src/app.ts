@@ -1,13 +1,12 @@
-import { serve } from "https://deno.land/std@0.154.0/http/server.ts";
-import { bot } from "./app/bot.ts";
-import { webhookCallback } from "./deps.deno.ts";
+import { webhookCallback } from "Grammy";
+import bot from "$bot";
 
 const handleUpdate = webhookCallback(bot, "std/http");
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method == "POST") {
     const url = new URL(req.url);
-    if (url.pathname.slice(1) == bot.token) {
+    if (url.pathname.slice(1) === bot.token) {
       try {
         return await handleUpdate(req);
       } catch (err) {

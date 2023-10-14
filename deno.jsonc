@@ -1,0 +1,22 @@
+{
+  "lint": {
+    "rules": {
+      "tags": [""]
+    }
+  },
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --allow-read ./src/local.ts",
+    "serve": "deno run --allow-net --allow-env --allow-read ./src/app.ts"
+  },
+  "imports": {
+    // Bot entity and env setup
+    "$bot": "./src/bot/index.ts",
+    "$env": "./src/bot/env.ts",
+    // Bot modules
+    "$modules/base": "./src/bot/modules/base/index.ts",
+    "$modules/insta": "./src/bot/modules/insta/index.ts",
+    // Dependencies
+    "dotenv": "https://deno.land/std@0.204.0/dotenv/mod.ts",
+    "Grammy": "https://deno.land/x/grammy@v1.19.1/mod.ts"
+  }
+}
