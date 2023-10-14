@@ -1,9 +1,4 @@
 {
-  "lint": {
-    "rules": {
-      "tags": [""]
-    }
-  },
   "tasks": {
     "dev": "deno run --allow-net --allow-env --allow-read ./src/local.ts",
     "serve": "deno run --allow-net --allow-env --allow-read ./src/app.ts"

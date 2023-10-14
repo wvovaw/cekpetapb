@@ -3,16 +3,15 @@
  */
 
 import { Composer } from "Grammy";
-import { getReelFileUrl } from "../lib/getReelFileUrl.ts";
+import { getReelContent } from "../lib/getReelContent.ts";
 
 const $ = new Composer();
 
 $.inlineQuery(/https:\/\/www\.instagram\.com\/reel.*/, async (ctx) => {
   try {
-    const reel = await getReelFileUrl(ctx.inlineQuery.query);
+    const reel = await getReelContent(ctx.inlineQuery.query);
 
     if (!reel) {
-      // TODO: give a feedback without actions: Timeout. Please, try again
       await ctx.answerInlineQuery([], {
         cache_time: 0,
       });
@@ -23,8 +22,8 @@ $.inlineQuery(/https:\/\/www\.instagram\.com\/reel.*/, async (ctx) => {
             type: "video",
             mime_type: "video/mp4",
             id: String(Date.now()),
-            title: reel.author,
-            description: `${reel.author}\'s reel`,
+            title: `Reel by ${reel.author}`,
+            description: `${reel.author}`,
             video_url: reel.video_url,
             thumbnail_url: reel.preview_url,
           },
@@ -33,7 +32,7 @@ $.inlineQuery(/https:\/\/www\.instagram\.com\/reel.*/, async (ctx) => {
       );
     }
   } catch (e) {
-    throw new Error(e);
+    throw e;
   }
 });
 

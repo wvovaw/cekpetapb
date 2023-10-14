@@ -3,36 +3,49 @@
  */
 
 import { Composer } from "Grammy";
-import { getReelFileUrl } from "../lib/getReelFileUrl.ts";
+import { type InlineQueryResult } from "https://deno.land/x/grammy_types@v3.3.0/inline.ts";
+import { getPostContent } from "../lib/getPostContent.ts";
 
 const $ = new Composer();
 
-$.inlineQuery(/https:\/\/www\.instagram\.com\/reel.*/, async (ctx) => {
+$.inlineQuery(/https:\/\/www\.instagram\.com\/p.*/, async (ctx) => {
   try {
-    const reel = await getReelFileUrl(ctx.inlineQuery.query);
+    const post = await getPostContent(ctx.inlineQuery.query);
 
-    if (!reel) {
+    if (!post) {
       await ctx.answerInlineQuery([], {
         cache_time: 0,
       });
     } else {
-      await ctx.answerInlineQuery(
-        [
-          {
+      const result: InlineQueryResult[] = [];
+      for (const item of post.items) {
+        if (item.type === "image")
+          result.push({
+            id: String(Date.now() + item.index),
+            type: "photo",
+            title: `Image ${item.index}`,
+            description: `Image by ${post.author}`,
+            thumbnail_url: item.preview_url,
+            photo_width: 600,
+            photo_height: 600,
+            photo_url: item.url,
+          });
+        else if (item.type === "video")
+          result.push({
+            id: String(Date.now() + item.index),
             type: "video",
             mime_type: "video/mp4",
-            id: String(Date.now()),
-            title: reel.author,
-            description: `${reel.author}\'s reel`,
-            video_url: reel.video_url,
-            thumbnail_url: reel.preview_url,
-          },
-        ],
-        { cache_time: 3600 * 24 * 30 }
-      );
+            title: `Video (${item.index})`,
+            description: `Video by ${post.author}`,
+            video_url: item.url,
+            thumbnail_url: item.preview_url,
+          });
+      }
+
+      await ctx.answerInlineQuery(result, { cache_time: 3600 * 24 * 30 });
     }
   } catch (e) {
-    throw new Error(e);
+    throw e;
   }
 });
 

@@ -3,7 +3,6 @@ import env from "$env";
 import base from "$modules/base";
 import insta from "$modules/insta";
 
-console.log(env);
 const bot = new Bot(env.TELEGRAM_API_KEY);
 bot.use(insta);
 bot.use(base);
