@@ -8,7 +8,8 @@
 
 ## What can it do now
 
-- Send instagram reels provided by url as embeded video directly in chats using telegram inline query
+- Send instagram reels by url as embeded video directly in chats using telegram inline query
+- Same for instagram posts media, including carousels
 
 ## Development
 

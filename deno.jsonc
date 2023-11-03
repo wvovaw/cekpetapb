@@ -12,6 +12,7 @@
     "$modules/insta": "./src/bot/modules/insta/index.ts",
     // Dependencies
     "dotenv": "https://deno.land/std@0.204.0/dotenv/mod.ts",
-    "Grammy": "https://deno.land/x/grammy@v1.19.1/mod.ts"
+    "Grammy": "https://deno.land/x/grammy@v1.19.1/mod.ts",
+    "GrammyTypes": "https://deno.land/x/grammy_types@v3.3.0/mod.ts",
   }
 }
