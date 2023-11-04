@@ -20,7 +20,9 @@ type PostContent = {
  */
 export async function getPostByUrl(url: string): Promise<PostContent | null> {
   try {
-    const shortcode = url.substring(28, 39);
+    const matches = url.match(/\/p\/(\w+)/);
+    if (!matches) return null;
+    const shortcode = matches[1];
     const data = await rocketAPI(RocketApiEndpoints.MEDIA_INFO_BY_SHORTCODE, {
       shortcode,
     });
@@ -28,7 +30,7 @@ export async function getPostByUrl(url: string): Promise<PostContent | null> {
     if (data?.status === "done") {
       const post = data.response.body.items[0];
       const author = post.user.username;
-      if (post.carousel_media && post.carousel_media.length > 0)
+      if (post.carousel_media && post.carousel_media.length > 0) {
         return {
           author,
           items: post.carousel_media.map((item, ix) => {
@@ -55,7 +57,7 @@ export async function getPostByUrl(url: string): Promise<PostContent | null> {
             return data;
           }),
         };
-      else {
+      } else {
         const image = post.image_versions2.candidates.at(0)!;
         const preview = post.image_versions2.candidates.at(-1)!;
         return {

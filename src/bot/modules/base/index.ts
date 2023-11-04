@@ -1,5 +1,5 @@
-import { Composer, InlineKeyboard } from "Grammy";
-import start from "./commands/start.ts"
+import { Composer } from "Grammy";
+import start from "./commands/start.ts";
 import help from "./inlines/help.ts";
 
 const base = new Composer();

@@ -12,7 +12,7 @@ import timeout from "../lib/constants/timeout_inline_article.ts";
 
 const $ = new Composer();
 
-$.inlineQuery(/https:\/\/www\.instagram\.com\/p.*/, async (ctx) => {
+$.inlineQuery(/https:\/\/(www\.)?instagram\.com\/p.*/, async (ctx) => {
   try {
     const post = await getPostByUrl(ctx.inlineQuery.query);
 
@@ -23,7 +23,7 @@ $.inlineQuery(/https:\/\/www\.instagram\.com\/p.*/, async (ctx) => {
     } else {
       const result: (InlineQueryResultPhoto | InlineQueryResultVideo)[] = [];
       for (const item of post.items) {
-        if (item.type === "image")
+        if (item.type === "image") {
           result.push({
             id: String(Date.now() + item.index),
             type: "photo",
@@ -34,7 +34,7 @@ $.inlineQuery(/https:\/\/www\.instagram\.com\/p.*/, async (ctx) => {
             photo_height: item.height,
             photo_url: item.url,
           });
-        else if (item.type === "video")
+        } else if (item.type === "video") {
           result.push({
             id: String(Date.now() + item.index),
             type: "video",
@@ -44,6 +44,7 @@ $.inlineQuery(/https:\/\/www\.instagram\.com\/p.*/, async (ctx) => {
             video_url: item.url,
             thumbnail_url: item.preview_url,
           });
+        }
       }
       await ctx.answerInlineQuery(result, { cache_time: 600 });
     }

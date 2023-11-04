@@ -3,6 +3,7 @@
  */
 
 import { Composer, InlineKeyboard } from "Grammy";
+import env from "$env";
 
 const $ = new Composer();
 
@@ -14,11 +15,10 @@ $.inlineQuery(
         {
           type: "article",
           id: "help",
-          title: "Reels in telegram",
-          description: "Send reels right in telegram",
+          title: "Instagram media in telegram",
+          description: "Send posts media, reels and story right in chat",
           input_message_content: {
-            message_text:
-              "<b>Hi 👋</b> I'm Cekpetapb!.\nYou can use me to embed insta reels right in telegram chats. Paste a reel url in the inline mentioning me, wait untill it resolved (around 10s, try again if it fail), tap a corresponding inline button, that\'s it !\nFormat: <b>@wvovaw_bot 'reel_url'</b>",
+            message_text: `<b>Hi 👋 I'm ${env.BOT_NAME}!</b> \nYou can use me to embed insta media content (reels, stories, post media) right in telegram chats. Paste a url in the inline mentioning me, wait untill it resolved (around 5s, try again if it fail), tap a corresponding inline result, that's it !\nFormat: <b>@${env.BOT_USERNAME} 'url'</b>`,
             parse_mode: "HTML",
           },
           reply_markup: new InlineKeyboard().url(

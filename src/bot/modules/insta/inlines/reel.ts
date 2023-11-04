@@ -8,7 +8,7 @@ import timeout from "../lib/constants/timeout_inline_article.ts";
 
 const $ = new Composer();
 
-$.inlineQuery(/https:\/\/www\.instagram\.com\/reel.*/, async (ctx) => {
+$.inlineQuery(/https:\/\/(www\.)?instagram\.com\/reel.*/, async (ctx) => {
   try {
     const reel = await getReelByUrl(ctx.inlineQuery.query);
 
@@ -29,7 +29,7 @@ $.inlineQuery(/https:\/\/www\.instagram\.com\/reel.*/, async (ctx) => {
             thumbnail_url: reel.preview_url,
           },
         ],
-        { cache_time: 600 }
+        { cache_time: 600 },
       );
     }
   } catch (e) {

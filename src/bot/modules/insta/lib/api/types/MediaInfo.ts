@@ -1,9 +1,3 @@
-export interface StoriesInfo {
-  reels: Record<number, MediaItem>;
-  reels_media: MediaItem[];
-  status: string;
-}
-
 export interface MediaInfo {
   items: MediaItem[];
   num_results: number;

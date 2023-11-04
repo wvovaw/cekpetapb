@@ -13,22 +13,21 @@ type ReelContent = {
  */
 export async function getReelByUrl(url: string): Promise<ReelContent | null> {
   try {
-    const shortcode = url.substring(31, 42);
-    const data = await rocketAPI(
-      RocketApiEndpoints.MEDIA_INFO_BY_SHORTCODE,
-      { shortcode }
-    );
-
+    const matches = url.match(/\/reel\/(\w+)/);
+    if (!matches) return null;
+    const shortcode = matches[1];
+    const data = await rocketAPI(RocketApiEndpoints.MEDIA_INFO_BY_SHORTCODE, {
+      shortcode,
+    });
     if (data?.status === "done") {
       const reel = data.response.body.items[0];
       return {
         author: reel.user.username,
         preview_url: reel.image_versions2.candidates[0].url,
         video_url: reel.video_versions!.at(-1)!.url,
-        title: reel.caption.text
+        title: reel.caption.text,
       };
-    }
-    else return null;
+    } else return null;
   } catch (e: unknown) {
     console.log(e);
     return null;
