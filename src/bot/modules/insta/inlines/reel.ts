@@ -23,13 +23,13 @@ $.inlineQuery(/https:\/\/(www\.)?instagram\.com\/reel.*/, async (ctx) => {
             type: "video",
             mime_type: "video/mp4",
             id: String(Date.now()),
-            title: `${reel.title}`,
+            title: `${reel.title ?? "untitled"}`,
             description: `${reel.author}`,
             video_url: reel.video_url,
             thumbnail_url: reel.preview_url,
           },
         ],
-        { cache_time: 600 },
+        { cache_time: 600 }
       );
     }
   } catch (e) {

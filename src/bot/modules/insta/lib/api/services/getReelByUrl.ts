@@ -3,7 +3,7 @@ type ReelContent = {
   video_url: string;
   preview_url: string;
   author: string;
-  title: string;
+  title?: string;
 };
 
 /**
@@ -25,7 +25,8 @@ export async function getReelByUrl(url: string): Promise<ReelContent | null> {
         author: reel.user.username,
         preview_url: reel.image_versions2.candidates[0].url,
         video_url: reel.video_versions!.at(-1)!.url,
-        title: reel.caption.text,
+        title:
+          reel.caption && reel.caption.text ? reel.caption.text : undefined,
       };
     } else return null;
   } catch (e: unknown) {

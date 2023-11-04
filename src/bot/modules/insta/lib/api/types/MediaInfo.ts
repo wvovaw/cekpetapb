@@ -37,7 +37,7 @@ export interface MediaItem {
   media_type: number;
   code: string;
   can_viewer_reshare: boolean;
-  caption: MediaCaption;
+  caption?: MediaCaption;
   clips_tab_pinned_user_ids: any[];
   original_media_has_visual_reply_media: boolean;
   invited_coauthor_producers: any[];
@@ -99,7 +99,7 @@ interface MediaCaption {
   user_id: any;
   user: User;
   type: number;
-  text: string;
+  text?: string;
   did_report_as_spam: boolean;
   created_at: number;
   created_at_utc: number;
