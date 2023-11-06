@@ -4,7 +4,10 @@
 
 import { Composer } from "Grammy";
 import { getReelByUrl } from "../lib/api/services/getReelByUrl.ts";
-import timeout from "../lib/constants/timeout_inline_article.ts";
+import {
+  errorInlineArticleBuilder,
+  timeoutArticle,
+} from "../lib/inline_templates/error_inline_article.ts";
 
 const $ = new Composer();
 
@@ -13,7 +16,7 @@ $.inlineQuery(/https:\/\/(www\.)?instagram\.com\/reel.*/, async (ctx) => {
     const reel = await getReelByUrl(ctx.inlineQuery.query);
 
     if (!reel) {
-      await ctx.answerInlineQuery([timeout], {
+      await ctx.answerInlineQuery([timeoutArticle], {
         cache_time: 0,
       });
     } else {
@@ -32,8 +35,15 @@ $.inlineQuery(/https:\/\/(www\.)?instagram\.com\/reel.*/, async (ctx) => {
         { cache_time: 600 }
       );
     }
-  } catch (e) {
-    throw e;
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      return ctx.answerInlineQuery(
+        [errorInlineArticleBuilder("Insta reel request error", e.message, e.message)],
+        {
+          cache_time: 0,
+        }
+      );
+    } else throw e;
   }
 });
 

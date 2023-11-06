@@ -31,7 +31,7 @@ type RocketApiResponseData<E extends RocketApiEndpoints> = {
 
 export async function rocketAPI<E extends RocketApiEndpoints>(
   endpoint: E,
-  payload: RocketApiPayloadData<E>,
+  payload: RocketApiPayloadData<E>
 ): Promise<RocketApiResponseData<E> | null> {
   const abortController = new AbortController();
   setTimeout(() => abortController.abort(), 9900);
@@ -48,7 +48,7 @@ export async function rocketAPI<E extends RocketApiEndpoints>(
         },
         signal: abortController.signal,
         body: JSON.stringify(payload),
-      },
+      }
     );
     if (res.status === 429) {
       console.warn("Key %s has reached limit", apiKeyName);
@@ -64,7 +64,7 @@ export async function rocketAPI<E extends RocketApiEndpoints>(
   } catch (e: unknown) {
     console.error(
       "RocketAPI request failed or aborted because of timeout: ",
-      e,
+      e
     );
     return null;
   }

@@ -8,7 +8,10 @@ import {
   type InlineQueryResultVideo,
 } from "GrammyTypes";
 import { getStoryByUrl } from "../lib/api/services/getStoryByUrl.ts";
-import timeout from "../lib/constants/timeout_inline_article.ts";
+import {
+  errorInlineArticleBuilder,
+  timeoutArticle,
+} from "../lib/inline_templates/error_inline_article.ts";
 
 const $ = new Composer();
 
@@ -17,7 +20,7 @@ $.inlineQuery(/https:\/\/(www\.)?instagram\.com\/stories.*/, async (ctx) => {
     const story = await getStoryByUrl(ctx.inlineQuery.query);
 
     if (!story) {
-      await ctx.answerInlineQuery([timeout], {
+      await ctx.answerInlineQuery([timeoutArticle], {
         cache_time: 0,
       });
     } else {
@@ -48,7 +51,20 @@ $.inlineQuery(/https:\/\/(www\.)?instagram\.com\/stories.*/, async (ctx) => {
       await ctx.answerInlineQuery(result, { cache_time: 600 });
     }
   } catch (e) {
-    throw e;
+    if (e instanceof Error) {
+      return ctx.answerInlineQuery(
+        [
+          errorInlineArticleBuilder(
+            "Insta story request error",
+            e.message,
+            e.message
+          ),
+        ],
+        {
+          cache_time: 0,
+        }
+      );
+    } else throw e;
   }
 });
 
